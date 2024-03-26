@@ -1,10 +1,10 @@
 const express = require("express");
-const router = express.Router();
-const sequelize = require('./config/connection');
+const db = require('./config/connection');
 const bodyParser = require('body-parser');
-const allRoutes = require('./controllers/');
+const allRoutes = require('./controllers');
 const PORT = process.env.PORT || 3001;
 const app = express();
+const cwd = process.cwd();
 require('dotenv').config();
 const cors = require('cors');
 app.use(cors());
@@ -16,8 +16,8 @@ app.use(express.json());
 
 app.use(`/`, allRoutes)
 
-sequelize.sync({ force: false }).then(function() {
-    app.listen(PORT, function() {
-        console.log('App listening on PORT ' + PORT);
+db.once('open', () => {
+    app.listen(PORT, () => {
+      console.log(`API server  running on port ${PORT}!`);
     });
-});
+  });
