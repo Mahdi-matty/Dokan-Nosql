@@ -1,3 +1,4 @@
+const withTokenAuth = require('../../middleware/withTokenAuth')
 const router = require('express').Router();
 const {
  getOrders,
@@ -7,7 +8,8 @@ const {
 } = require('../../controllers/orderController')
 
 
-router.route('/').get(getOrders).post(createOrder)
+router.route('/').get(getOrders).post(withTokenAuth, createOrder)
+
 
 router.route('/:orderId').get(getSingleOrder).delete(deleteOrder)
 
